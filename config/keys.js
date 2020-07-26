@@ -4,6 +4,7 @@ const refreshSecret = process.env.refreshSecret;
 const emailSecret = process.env.emailSecret;
 const emailAddress = process.env.emailAddress;
 const emailPassword = process.env.emailPassword;
+const clearBitAPIKey = process.env.clearBitAPIKey;
 const googleAPIKey = process.env.googleAPIKey;
 
 module.exports = {
