@@ -358,7 +358,7 @@ router.get("/linkedin", (req, res) => {
                         if (!updatedUser) {
                             return res.status(404).json({data: "User of specified Data not present in Database"});
                         }
-                        return res.redirect("https://orbital-trackr.herokuapp.com/SyncLinkedIn"); // redirect back to sync account page
+                        return res.redirect("https://orbital-trackr.herokuapp.com/"); // redirect back to homepage
                     });
                 });
             } else {
