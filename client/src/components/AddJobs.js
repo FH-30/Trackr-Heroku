@@ -3,6 +3,7 @@ import axios from 'axios';
 import "./Thirdboard/Thirdboard.css"
 import M from "materialize-css"
 import { GoogleComponent } from 'react-google-location'
+import PlacesAutocomplete, {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 import { DatePicker } from "react-materialize";
 
 class AddJobs extends Component {
@@ -80,6 +81,19 @@ class AddJobs extends Component {
     
         return year + h + month + h + day;
     }
+
+    handleChangePlace = address => {
+        this.setState({place: address});
+    };
+     
+    handleSelect = async address => {
+        const results = await geocodeByAddress(address)
+        const latLng = await getLatLng(results[0])
+        this.setState({
+            place: address,
+            coordinates: latLng
+        })
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -170,7 +184,45 @@ class AddJobs extends Component {
                         </div>
                         <div className="input-field col s6">
                             <i className="material-icons prefix">location_on</i>
-                            <GoogleComponent
+                            <PlacesAutocomplete
+                                value={this.state.place}
+                                onChange={this.handleChangePlace}
+                                onSelect={this.handleSelect}
+                            >
+                                {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                <div>
+                                    <input
+                                    {...getInputProps({
+                                        placeholder: 'Search Places ...',
+                                        className: 'location-search-input',
+                                    })}
+                                    />
+                                    <div className="autocomplete-dropdown-container">
+                                    {loading && <div>Loading...</div>}
+                                    {suggestions.map(suggestion => {
+                                        const className = suggestion.active
+                                        ? 'suggestion-item--active'
+                                        : 'suggestion-item';
+                                        // inline style for demonstration purpose
+                                        const style = suggestion.active
+                                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                        return (
+                                        <div
+                                            {...getSuggestionItemProps(suggestion, {
+                                            className,
+                                            style,
+                                            })}
+                                        >
+                                            <span>{suggestion.description}</span>
+                                        </div>
+                                        );
+                                    })}
+                                    </div>
+                                </div>
+                                )}
+                            </PlacesAutocomplete>
+                            {/* <GoogleComponent
                             apiKey={this.state.key}
                             language={'en'}
                             coordinates={true}
@@ -178,7 +230,7 @@ class AddJobs extends Component {
                             locationListStyle={'custom-style-list'}
                             onChange={(e) => { this.setState({ coordinates: e.coordinates,
                                                                 place: e.place }) }} 
-                            />
+                            /> */}
                         </div>
                         <div className="input-field col s12">
                             <i className="material-icons prefix">person</i>
