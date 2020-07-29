@@ -66,6 +66,35 @@ class EditJobs extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        if (this.state.company !== '' && this.state.role === '' && this.state.status === '') {
+            this.setState({
+                errors: {role: "Role field is required", status: "Status field is required"}
+            })
+        } else if (this.state.company === '' && this.state.role !== '' && this.state.status === '') {
+            this.setState({
+                errors: {company: "Company field is required", status: "Status field is required"}
+            })
+        } else if (this.state.company === '' && this.state.role === '' && this.state.status !== '') {
+            this.setState({
+                errors: {company: "Company field is required", role: "Role field is required"}
+            })
+        } else if (this.state.company === '' && this.state.role !== '' && this.state.status !== '') {
+            this.setState({
+                errors: {company: "Company field is required"}
+            })
+        } else if (this.state.company !== '' && this.state.role === '' && this.state.status !== '') {
+            this.setState({
+                errors: {role: "Role field is required"}
+            })
+        } else if (this.state.company !== '' && this.state.role !== '' && this.state.status === '') {
+            this.setState({
+                errors: {status: "Status field is required"}
+            })
+        } else if (this.state.company !== '' && this.state.role === '' && this.state.status === '') {
+            this.setState({
+                errors: {company: "Company field is required", role: "Role field is required", status: "Status field is required"}
+            })
+        } else {
         axios.get("https://orbital-trackr.herokuapp.com/api/users/logo/" + this.state.company)
             .then(res => {
                 if (res.data.logo) {
@@ -83,6 +112,7 @@ class EditJobs extends Component {
                     id: this.state.id,
                     logo: this.state.logo
                 }
+                console.log(editedJob)
                 const newArr = this.props.editExistingJob(editedJob) 
                 const newObj = {
                     updated: true,
@@ -92,6 +122,7 @@ class EditJobs extends Component {
                 this.putNewObj(newObj)
                     .then(res => {
                         if (res) {
+                            console.log("run")
                             this.props.closeEditForm()
                         }
                 })
@@ -106,6 +137,7 @@ class EditJobs extends Component {
                     })
                 }
             })
+        }
     }
 
     componentDidMount() {
