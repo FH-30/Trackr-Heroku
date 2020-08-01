@@ -50,8 +50,8 @@ const db = require("./config/keys").mongoURI;
 
 const options = {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    autoIndex: true, //this is the code I added that solved it all
+    // useCreateIndex: true,
+    // autoIndex: true, //this is the code I added that solved it all
     keepAlive: true,
     poolSize: 10,
     bufferMaxEntries: 0,
